@@ -1,0 +1,68 @@
+swagger: '2.0'
+info:
+  description: >-
+    This is a bot api.
+  version: 1.0.0
+  title: BrixBot service
+host: 'localhost'
+basePath: '/api/v1'
+tags:
+  - name: bot
+    description: Bot Service.
+schemes:
+  - http
+paths:
+  /chat:
+    post:
+      tags:
+       - bot
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: message
+          description: The user to create.
+          schema:
+            $ref: '#/definitions/Message'
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Message'
+  /history:
+    get:
+      tags:
+       - bot
+      operationId: history
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: offset
+          type: integer
+          format: int64
+          description: The offset timestamp 
+        - in: query
+          name: limit
+          type: integer
+          description: The maximum count numbers of messages.
+      responses:
+        '200':
+          description: List of Messages.
+          schema:
+            type: "array"
+            items:
+               $ref: '#/definitions/Message'
+              
+definitions:
+  Message:
+    type: object
+    properties:
+      time:
+        type: integer
+        format: int64
+      text:
+        type: string
+      avatar:
+        type: string
+

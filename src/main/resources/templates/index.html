@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Chat</title>
+
+		<link rel="stylesheet" href="bootstrap-4.3.1-dist/css/bootstrap.min.css" >
+		<link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+		
+	
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	<link href="css/style.css" rel="stylesheet">
+
+	
+  </head>
+  <body>
+      <div class="col-sm-3 col-sm-offset-4 frame">
+            <ul></ul>
+            <div>
+                <div class="msj-rta macro" style="margin:auto">                        
+                    <div class="text text-r" style="background:whitesmoke !important">
+                        <input class="mytext" placeholder="Type a message"/>
+                    </div> 
+                </div>
+            </div>
+        </div>        
+    
+    <script id="chat-left-template" type="text/x-handlebars-template">
+        <li style="width:100%">
+			<div class="msj macro">
+				<div class="avatar">
+					<img class="img-circle" style="width:100%;background-color:gray;" src="{{avatar}}" />
+				</div>
+				<div class="text text-l">
+					<p>{{text}}</p>
+                    <p><small>{{date}}</small></p>
+                </div>
+			</div>
+		</li> 
+    </script>
+    <script id="chat-right-template" type="text/x-handlebars-template">
+        <li style="width:100%">
+			<div class="msj-rta macro">
+				<div class="text text-r">
+					<p>{{text}}</p>
+                    <p><small>{{date}}</small></p>
+                </div>
+                <div class="avatar" style="padding:0px 0px 0px 10px !important">
+					<img class="img-circle" style="width:100%;" src="{{avatar}}" />
+				</div>
+			</div>
+		</li> 
+    </script>   
+    
+
+        
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/popper-1.15.0.min.js"></script>
+    <script src="bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+    
+    <script src="js/handlebars-v4.1.2.js"></script>
+	
+	  <script src="js/script.js"></script>
+
+  </body>
+</html>

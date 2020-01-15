@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Videos Browser</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<link rel="stylesheet" href="bootstrap-4.3.1-dist/css/bootstrap.min.css" >
+		<link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+		
+	 	<script src="js/jquery-3.4.1.min.js"></script>
+	 	<script src="js/popper-1.15.0.min.js"></script>
+
+	 	<script src="bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+	    
+	    <script src="js/handlebars-v4.1.2.js"></script>
+	         
+	         
+	    <style>
+			.video-list-thumbs{}
+	
+			.video-list-thumbs > li{
+			    margin-bottom:12px;
+			}
+			.video-list-thumbs > li:last-child{}
+			.video-list-thumbs > li > a{
+				display:block;
+				position:relative;
+				background-color: #111;
+				color: #fff;
+				padding: 8px;
+				border-radius:3px
+			    transition:all 500ms ease-in-out;
+			    border-radius:4px
+			}
+			.video-list-thumbs > li > a:hover{
+				box-shadow:0 2px 5px rgba(0,0,0,.3);
+				text-decoration:none
+			}
+			.video-list-thumbs h2{
+				bottom: 0;
+				font-size: 14px;
+				height: 33px;
+				margin: 8px 0 0;
+			}
+			.video-list-thumbs .fa-play-circle-o {
+			    font-size: 60px;
+			    opacity: 0.6;
+			    position: absolute;
+			    right: 39%;
+			    top: 31%;
+			    text-shadow: 0 1px 3px rgba(0,0,0,.5);
+			    transition:all 500ms ease-in-out;
+			}
+			.video-list-thumbs > li > a:hover .fa-play-circle-o {
+				color:#fff;
+				opacity:1;
+				text-shadow:0 1px 3px rgba(0,0,0,.8);
+			}
+			.video-list-thumbs .duration{
+				background-color: rgba(0, 0, 0, 0.4);
+				border-radius: 2px;
+				color: #fff;
+				font-size: 11px;
+				font-weight: bold;
+				left: 12px;
+				line-height: 13px;
+				padding: 2px 3px 1px;
+				position: absolute;
+				top: 12px;
+			    transition:all 500ms ease;
+			}
+			.video-list-thumbs > li > a:hover .duration{
+				background-color:#000;
+			}
+			@media (min-width:320px) and (max-width: 480px) { 
+				.video-list-thumbs .fa-play-circle-o{
+			    font-size: 35px;
+			    right: 45%;
+			    top: 40%;
+				}
+				.video-list-thumbs h2{
+					bottom: 0;
+					font-size: 12px;
+					height: 22px;
+					margin: 8px 0 0;
+				}
+			}	
+			
+		  </style>
+    </head>
+    <body>
+
+
+    <script id="entry-template" type="text/x-handlebars-template">
+      <li class="col-lg-3 col-sm-4 col-xs-6">
+		<a href="{{url}}" id="{{title}}" title="{{title}}">
+			<img src="images/video-default.png" alt="Video Player" class="img-responsive" width="100%" />
+			<h2 class="details">{{title}}</h2>
+			<span class="fa fa-play-circle-o"></span>
+			<span class="duration"> ... </span>
+		</a>
+	  </li>
+    
+	</script>
+
+  
+
+	<main role="main">
+	
+	  <!-- Main jumbotron for a primary marketing message or call to action -->
+	  <div class="jumbotron">
+	    <div class="container">
+	      <h1 class="display-3">Videos Browser</h1>
+	    </div>
+	  </div>
+	
+	  <div class="container">
+	       	<ul id="videos" class="list-unstyled video-list-thumbs row">
+
+					
+			</ul>
+				
+	  </div> <!-- /container -->
+	
+	</main>
+
+	<footer class="container">
+	  <p>&copy; DB Systel GmbH 2018</p>
+	</footer>
+	
+           <script>
+				$(document).ready(function(){
+				
+				   
+					
+					
+				    function showMetadata(data)
+				    {
+				    
+				      for(var ix = 0;ix < data.length;ix++)
+				      {
+				         $.getJSON( "api/v1/videos/"+data[ix], function( metadata ) {
+  							
+							
+							
+							var arrow = "<i class='fa fa-long-arrow-right' aria-hidden='true'></i>";
+							var train = " <i class='fa fa-train' aria-hidden='true'></i> ";
+							
+							$("#"+metadata.id+" > .duration").text(metadata.train.startDate);	
+							
+							$("#"+metadata.id+" > .details").html(metadata.fromStation + arrow + metadata.toStation+ train +metadata.train.number)
+							        
+						 }).fail(function() {
+						    console.log( "error" );
+						 });
+				      
+				      }
+				    
+				    
+				    }
+				
+				
+				
+				    var entryTemplateSsource   = document.getElementById("entry-template").innerHTML;
+					var entryTemplate = Handlebars.compile(entryTemplateSsource);
+				
+					var videoplayerUrlTemplate = '[[${videoplayerurl}]]';
+					
+					$.getJSON( "api/v1/videos", function( data ) {
+					 	
+					 	$.each( data, function( ix , val ) {
+    					     
+    					     console.log(ix + " == " + val);
+    					     
+    					     var context = {title: val, url: videoplayerUrlTemplate.replace("{videoId}",val)};
+							 var html    = entryTemplate(context);
+    					     
+    					     
+    					     $("#videos").append(html);
+  						});
+					 	
+					    setTimeout(function(){ showMetadata(data); }, 100);
+					 	
+				    }).fail(function() {
+						    console.log( "error" );
+					});
+				
+				});
+			   </script>
+  
+    </body>
+
+</html>
